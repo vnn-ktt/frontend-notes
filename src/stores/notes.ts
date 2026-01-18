@@ -1,10 +1,10 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import type { INote } from '@/types'
 import * as guards from '@/types/guards'
 
-export const useNotesStore = defineStore('counter', () => {
+export const useNotesStore = defineStore('notes', () => {
   const notes = ref<INote[]>([])
   const loading = ref<boolean>(false)
   const error = ref<string | null>(null)

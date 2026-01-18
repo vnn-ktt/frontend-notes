@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
 import type { ILoginCredentials, IRegisterCredentials } from '@/types'
 
+const router = useRouter()
 const authStore = useAuthStore()
 const loginCredentials = reactive<ILoginCredentials>({
   email: '',
@@ -22,8 +24,11 @@ const handleLogin = async () => {
   error.value = ''
   const result = await authStore.login(loginCredentials)
   if (!result.success) {
-    error.value = 'Login failed'
+    error.value = result.message
+  } else {
+    await router.push({ name: 'home' })
   }
+
   loading.value = false
 }
 

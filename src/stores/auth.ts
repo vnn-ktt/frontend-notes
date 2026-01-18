@@ -1,11 +1,9 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { useRouter } from 'vue-router'
 import type { ILoginCredentials, IRegisterCredentials } from '@/types'
 
 export const useAuthStore = defineStore('auth', () => {
-    const router = useRouter()
     const token = ref<string>(localStorage.getItem('token') || '')
     const isAuthenticated = computed(() => !!token.value)
 
@@ -14,10 +12,13 @@ export const useAuthStore = defineStore('auth', () => {
             const response = await axios.post('/auth/login', credentials)
             token.value = response.data.access_token
             localStorage.setItem('token', token.value)
-            router.push({ name: 'Home' })
+
             return { success: true }
-        } catch (er) {
-            return { success: false, message: 'Invalid credentials' }
+        } catch (er: any) {
+            return {
+                success: false,
+                message: er.response?.data?.message || 'Invalid credentials'
+            }
         }
     }
 
@@ -34,7 +35,6 @@ export const useAuthStore = defineStore('auth', () => {
     const logout = () => {
         token.value = ''
         localStorage.removeItem('token')
-        router.push({ name: 'Login' })
     }
 
     return {

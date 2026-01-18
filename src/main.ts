@@ -14,7 +14,7 @@ app.use(router)
 app.use(VueAxios, axios)
 app.provide('axios', app.config.globalProperties.axios)
 
-axios.defaults.baseURL = 'https://3e9c5176b02cf678.mokky.dev'
+axios.defaults.baseURL = 'http://localhost:3000/'
 axios.interceptors.request.use(config => {
     const token = localStorage.getItem('token')
     if (token) {

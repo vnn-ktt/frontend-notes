@@ -3,9 +3,11 @@ import { onMounted, ref, reactive } from 'vue'
 import { useNotesStore } from '@/stores/notes'
 import { useAuthStore } from '@/stores/auth'
 import type { INote } from '@/types'
+import { useRouter } from 'vue-router'
 
 const notesStore = useNotesStore()
 const authStore = useAuthStore()
+const router = useRouter()
 
 const newNote = reactive<INote>({
   title: '',
@@ -57,6 +59,7 @@ const deleteNote = async (id: string) => {
 
 const logout = () => {
   authStore.logout()
+  router.push({ name: 'login' })
 }
 
 const formatDate = (date: Date | string) => {
